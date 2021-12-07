@@ -23,10 +23,15 @@
 
 // Program constant definitions
 const unsigned char maxCount = 50;
+#define pressed 0
+ #define notPressed 1
+
 
 // Program variable definitions
 unsigned char SW2Count = 0;
+unsigned char SW5count = 0;
 bool SW2Pressed = false;
+bool SW5Pressed = false;
 
 int main(void)
 {
@@ -39,18 +44,27 @@ int main(void)
 	{
         // Count SW2 button presses
         // Count new SW2 button presses
-        if(SW2 == 0 && SW2Pressed == false)
+        if(SW2 == pressed && SW2Pressed == false)
         {
             LED3 = 1;
-            SW2Pressed = true;
             if(SW2Count < 255)
             {
                 SW2Count = SW2Count + 1;
             }
+            SW2Pressed = true;
         }
 
+if(SW5 == pressed && SW5Pressed == false)
+        {
+            LED6 = 1;
+            if(SW5Count < 255)
+            {
+                SW5Count = SW5Count + 1;
+            }
+            SW5Pressed = true;
+        }
         // Clear pressed state if released
-        if(SW2 == 1)
+        if(SW2 == notPressed)
         {
             LED3 = 0;
             SW2Pressed = false;
@@ -65,10 +79,25 @@ int main(void)
             LED4 = 0;
         }
         
+        if(SW5 == notPressed)
+        {
+            LED6 = 0;
+            SW5Pressed = false;
+        }
+        
+        if(SW5Count >= maxCount)
+        {
+            LED5 = 1;
+        }
+        else
+        {
+            LED5 = 0;
+        }
         // Reset count and turn off LED D4
-        if(SW3 == 0)
+        if(SW3 == 0||SW4 ==0)
         {
             LED4 = 0;
+            LED5 = 0;
             SW2Count = 0;
         }
         
@@ -124,7 +153,7 @@ int main(void)
  *    higher than maxCount. If LED D4 turns off, what can you infer about the
  *    value of the SW2Count variable? Can you explain what happens to the
  *    SW2Count variable as the SW2 button is held?
- * The counter reaches the ma of 255 and since it can't go over that it goes to 256 and resets to 0
+ * The counter reaches the max of 255 and since it can't go over that it goes to 256 and resets to 0
  * 5. We can set a limit on the SW2Count variable by encapsulating its increment
  *    statement inside a conditional statement. In your program, replace the
  *    line 'SW2Count = SW2Count + 1;' with the code, below:
