@@ -25,15 +25,13 @@
 const unsigned char maxCount = 50;
 #define pressed 0
  #define notPressed 1
- #define ON 1
- #define OFF 0
 
 
 // Program variable definitions
 unsigned char SW2Count = 0;
 unsigned char SW5Count = 0;
 bool SW2Pressed = false;
-bool LED3ON = false;
+
 
 int main(void)
 {
@@ -46,27 +44,34 @@ int main(void)
 	{
         // Count SW2 button presses
         // Count new SW2 button presses
-        if(SW2 == 0 && LED3ON == false)
+        if(SW2 == pressed && SW2Pressed == false)
         {
-            LED3 = ON;
-            
+            SW2Pressed = true;
+            LED3 = 1;
         }
-        if(SW2 == 0 && LED3ON == true)
+        else 
         {
-            LED3 = OFF;
+            LED3 = 0;
         }
-
-        //ssss
-        if(SW2 ==1 && LED3 == ON)
+        //Second button function 
+        if(SW2 == pressed && SW2Pressed == true)
         {
-            LED3ON = true;
+            SW2Count = SW2Count + 1;
         }
-        if(SW2 ==1 && LED3 == OFF)
+        if(SW2Count >= maxCount)
         {
-            LED3ON = false;
+            LED6 = 1;
         }
-
-
+        else
+        {
+            LED6 = 0;
+        }
+        //reset
+        if(SW3 == pressed)
+        {
+            LED3 = 0;
+            LED6 = 0;
+        }
         // Add a short delay to the main while loop.
         __delay_ms(10);
         
@@ -289,7 +294,16 @@ int main(void)
  *    a toggle button. Each new press of the toggle button will 'toggle' an LED
  *    to its opposite state. (Toggle buttons are commonly used as push-on, 
  *    push-off power buttons in digital devices.)
- * 
+ * if(SW2 == pressed && SW2Pressed == false)
+        {
+            SW2Pressed = true;
+            LED3 = !LED3; 
+        }
+
+        if(SW2 == notPressed)
+        {
+            SW2Pressed = false;
+        }
  * 3. A multi-function button can be used to enable one action when pressed, and
  *    a second or alternate action when held. A variable that counts loop cycles
  *    can be used to determine how long a button is held (just as the first
@@ -312,4 +326,4 @@ int main(void)
  *    multi-function button that could be implemented to make your program
  *    ignore switch bounces. Multiple switch activations within a 50ms time span
  *    might indicate switch bounce and can be safely ignored.
- */
+ *You can add a delay 
